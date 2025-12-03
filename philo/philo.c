@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 20:54:31 by pecavalc          #+#    #+#             */
-/*   Updated: 2025/12/03 21:14:29 by pecavalc         ###   ########.fr       */
+/*   Updated: 2025/12/03 23:51:46 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,13 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "philo.h"
 
-pthread_mutex_t	mutex;
-
-void	*live()
+int	main(int argc, char **argv)
 {
-	
-	return (NULL);
-}
+	t_data		data;
 
-int main(int argc, char **argv)
-{
-	pthread_t	*t_array;
-	
-	pthread_init_mutex(&mutex, NULL);
-
-	parse_input(argv);
-
-	pthread_destroy_mutex(&mutex, NULL);
-
+	if (parse(argc, argv, &data))
+		return (1);
 	return (0);
 }
