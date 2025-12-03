@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 16:21:03 by pecavalc          #+#    #+#             */
-/*   Updated: 2025/12/03 22:18:14 by pecavalc         ###   ########.fr       */
+/*   Updated: 2025/12/03 23:46:09 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	validate_first_characters(const char *str, int *sign, int *i)
 {
 	if (str[0] == '\0')
 		return (1);
+	*sign = 1;
 	*i = 0;
 	while ((str[*i] >= 9 && str[*i] <= 13) || str[*i] == 32)
 		(*i)++;
@@ -50,7 +51,7 @@ int	ft_strtol(const char *str, long *number)
 
 	if (!str)
 		return (1);
-	if (validate_first_characters(str, &i, &sign))
+	if (validate_first_characters(str, &sign, &i))
 		return (2);
 	result = 0;
 	while (str[i] >= '0' && str[i] <= '9')
