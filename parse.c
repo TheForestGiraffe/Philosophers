@@ -6,12 +6,12 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:39:13 by pecavalc          #+#    #+#             */
-/*   Updated: 2025/12/03 23:49:38 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/02/26 15:11:24 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include "philo.h"
+#include "main.h"
 
 int	parse(int argc, char **argv, t_data *data)
 {

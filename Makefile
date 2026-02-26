@@ -6,15 +6,28 @@
 #    By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/07 15:25:57 by pecavalc          #+#    #+#              #
-#    Updated: 2025/12/03 23:38:36 by pecavalc         ###   ########.fr        #
+#    Updated: 2026/02/26 15:38:07 by pecavalc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo 
 
-SRC = ft_strtol.c parse.c philo.c
-OBJ = ft_strtol.o parse.o philo.o
-HEADER = philo.h
+SRC = 	forks.c \
+		ft_strtol.c \
+		get_time_ms.c \
+		main.c \
+		parse.c \
+		philo_routine.c \
+		philos.c 
+
+OBJ = 	ft_strtol.o \
+		get_time_ms.o \
+		main.o \
+		parse.o \
+		philo_routine.o \
+		philos.o
+
+HEADER = main.h
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread

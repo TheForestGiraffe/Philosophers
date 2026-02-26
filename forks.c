@@ -6,13 +6,12 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 20:12:52 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/02/25 19:54:33 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/02/26 11:44:28 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pthread.h>
 #include <stdlib.h>
-#include "philo.h"
 
 /* forks_create owns *forks and transfers ownership on return */
 
@@ -24,7 +23,7 @@ pthread_mutex_t	*forks_create(const long nr_philos)
 	if (nr_philos < 1)
 		return (NULL);
 
-	forks = malloc(sizeof(pthread_mutex_t) * nr_philos);
+	forks = malloc(sizeof(pthread_mutex_t) * (size_t)nr_philos);
 	if (!forks)
 		return (NULL);
 	i = 0;
