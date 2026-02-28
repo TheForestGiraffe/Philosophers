@@ -6,11 +6,12 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/02/28 22:37:50 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/02/28 23:20:35 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
+#include <stdlib.h>
 #include "philo.h"
 
 void app_init(t_app_data *app)
@@ -33,9 +34,9 @@ int	app_setup(t_app_data *app)
 	app->philo_array = malloc(sizeof(t_philo) * (size_t)app->nbr_philos);
 	if (!app->philo_array)
 		return (1);
-	
-
-
+	app->fork_array = malloc(sizeof(t_fork) * (size_t)app->nbr_philos);
+	if (!app->fork_array)
+		return (1);
 	return (0);
 }
 
