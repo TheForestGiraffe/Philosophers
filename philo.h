@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/02/28 23:46:27 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/01 00:14:38 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,10 @@ void	app_init(t_app_data *app);
 int		app_setup(int argc, char **argv, t_app_data *app);
 void	app_destroy(t_app_data *app);
 
-/* ------ Parser -------*/
-
 // parse_input.c
-int	parse_input(int argc, char **argv, t_app_data *app);
+int		parse_input(int argc, char **argv, t_app_data *app);
+
+// get_time_ms.c
+long	get_time_ms(void);
 
 #endif
