@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/02/28 16:02:36 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/02/28 22:35:14 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,14 @@ typedef struct s_philo
 struct s_app_data
 {
 	long	nbr_philos;
+	long	minimum_time_allowed;
 	long	time_to_die;
 	long	time_to_eat;
 	long	time_to_sleep;
 	bool	has_limit_nbr_meals;
 	long	limit_nbr_meals;
 	long	simulation_start_time;
-	long	simulation_end_time; 		// When a philo dies, or all are full
+	bool	stop_simulation_flag; 		// When a philo dies, or all are full
 	t_philo	*philo_array;
 	t_fork	*fork_array;
 };
@@ -59,8 +60,8 @@ void	app_destroy(t_app_data *app);
 
 /* ------ Parser -------*/
 
-// validate_and_parse_input.c
-int	validate_and_parse_input(int argc, char **argv, t_app_data *app);
+// parse_input.c
+int parse_input(int argc, char **argv, t_app_data *app);
 
 // strtol.c
 int	ft_strtol(const char *str, long *number);
