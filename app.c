@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/01 00:11:03 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/01 00:19:45 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	fork_array_setup(t_app_data *app)
 		if (pthread_mutex_init(&app->fork_array[i].fork_mutex, NULL))
 			return (2);
 		app->fork_array[i].fork_id = i;
+		i++;
 	}
 	return (0);
 }
@@ -62,19 +63,19 @@ int	philo_array_setup(t_app_data *app)
 		app->philo_array[i].last_meal_time = -1;
 		app->philo_array[i].app = app;
 		// TODO: assign forks
+		i++;
 	}
 	return (0);
 }
 
 int	app_setup(int argc, char **argv, t_app_data *app)
 {
-	if (parse_input(argc, argv, &app))
+	if (parse_input(argc, argv, app))
 		return (1);
-	if (forks_array_setup(app))
+	if (fork_array_setup(app))
 		return (2);	
 	if (philo_array_setup(app))
 		return (3);
-
 	return (0);
 }
 
