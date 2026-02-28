@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/02/28 23:31:30 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/02/28 23:46:27 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ struct s_app_data
 
 // app.c
 void	app_init(t_app_data *app);
-int		app_setup(t_app_data *app);
+int		app_setup(int argc, char **argv, t_app_data *app);
 void	app_destroy(t_app_data *app);
 
 /* ------ Parser -------*/
