@@ -6,12 +6,13 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:39:13 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/02/28 22:30:55 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/02/28 23:17:19 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "philo.h"
+#include "libft.h"
 
 static int	convert_and_validate_first_arguments(char **argv, t_app_data *app)
 {
@@ -32,7 +33,8 @@ static int	convert_and_validate_first_arguments(char **argv, t_app_data *app)
 		|| app->time_to_eat < app->minimum_time_allowed
 		|| app->time_to_sleep < app->minimum_time_allowed)
 	{
-		printf("The minimum time allowed is %ld ms.\n", app->minimum_time_allowed);
+		printf("The minimum time allowed is %ld ms.\n",
+			app->minimum_time_allowed);
 		return (1);
 	}
 	return (0);
