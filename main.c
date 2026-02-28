@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 20:54:31 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/02/28 16:01:58 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/02/28 21:48:44 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(int argc, char **argv)
 {
 	t_app_data	app;
 
-	if(validate_and_parse_input(argc, argv, &app))
+	if(parse_input(argc, argv, &app))
 		return (1);
 	if(app_setup(&app)) // TODO: implement
 	{

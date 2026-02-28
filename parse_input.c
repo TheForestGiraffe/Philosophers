@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate_and_parse_input.c                         :+:      :+:    :+:   */
+/*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:39:13 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/02/28 16:04:40 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/02/28 21:48:46 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "philo.h"
 
-int	validate_and_parse_input(int argc, char **argv, t_app_data *app)
+int	parse_input(int argc, char **argv, t_app_data *app)
 {
 	if (argc < 5 || argc > 6)
 	{

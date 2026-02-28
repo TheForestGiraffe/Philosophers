@@ -6,7 +6,7 @@
 #    By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/07 15:25:57 by pecavalc          #+#    #+#              #
-#    Updated: 2026/02/28 15:54:57 by pecavalc         ###   ########.fr        #
+#    Updated: 2026/02/28 21:48:53 by pecavalc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,12 @@ NAME = philo
 SRC = 	app.c \
 		ft_strtol.c \
 		main.c \
-		validate_and_parse_input.c \
+		parse_input.c \
 
 OBJ = 	app.o \
 		ft_strtol.o \
 		main.o \
-		validate_and_parse_input.o \
+		parse_input.o \
 
 HEADER = philo.h
 
