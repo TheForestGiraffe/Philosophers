@@ -6,28 +6,23 @@
 #    By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/07 15:25:57 by pecavalc          #+#    #+#              #
-#    Updated: 2026/02/26 15:38:07 by pecavalc         ###   ########.fr        #
+#    Updated: 2026/02/28 15:54:57 by pecavalc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philo 
+NAME = philo
 
-SRC = 	forks.c \
+SRC = 	app.c \
 		ft_strtol.c \
-		get_time_ms.c \
 		main.c \
-		parse.c \
-		philo_routine.c \
-		philos.c 
+		validate_and_parse_input.c \
 
-OBJ = 	ft_strtol.o \
-		get_time_ms.o \
+OBJ = 	app.o \
+		ft_strtol.o \
 		main.o \
-		parse.o \
-		philo_routine.o \
-		philos.o
+		validate_and_parse_input.o \
 
-HEADER = main.h
+HEADER = philo.h
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread
