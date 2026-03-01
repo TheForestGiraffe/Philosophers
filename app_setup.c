@@ -6,12 +6,13 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/01 01:09:39 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/01 01:18:17 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include "philo.h"
 
 static int	fork_array_setup(t_app_data *app)
@@ -35,7 +36,7 @@ static int	fork_array_setup(t_app_data *app)
 static void assign_forks(t_philo *philo_array, t_fork *fork_array,
 	int nbr_philos, int i)
 {
-	if (i == 0 || ((i % 2) == 0))
+	if ((i % 2) == 0)
 	{
 		philo_array[i].right_fork = &fork_array[i];
 		philo_array[i].left_fork = &fork_array[(i + 1) % nbr_philos];
