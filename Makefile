@@ -6,17 +6,21 @@
 #    By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/07 15:25:57 by pecavalc          #+#    #+#              #
-#    Updated: 2026/02/28 23:08:43 by pecavalc         ###   ########.fr        #
+#    Updated: 2026/03/01 01:11:06 by pecavalc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-SRC = 	app.c \
+SRC = 	app_init.c \
+		app_setup.c \
+		app_destroy.c \
 		main.c \
 		parse_input.c \
 
-OBJ = 	app.o \
+OBJ = 	app_init.o \
+		app_setup.o \
+		app_destroy.o \
 		main.o \
 		parse_input.o \
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   app.c                                              :+:      :+:    :+:   */
+/*   app_setup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/01 00:19:45 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/01 01:09:39 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,7 @@
 #include <stdlib.h>
 #include "philo.h"
 
-void app_init(t_app_data *app)
-{
-	app->nbr_philos = 0;
-	app->minimum_time_allowed = 60;
-	app->time_to_die = 0;
-	app->time_to_eat = 0;
-	app->time_to_sleep = 0;
-	app->has_limit_nbr_meals = false;
-	app->limit_nbr_meals = 0;
-	app->simulation_start_time = 0;
-	app->stop_simulation_flag = false;
-	app->philo_array = NULL;
-	app->fork_array = NULL;
-}
-
-int	fork_array_setup(t_app_data *app)
+static int	fork_array_setup(t_app_data *app)
 {
 	int	i;
 	
@@ -47,7 +32,22 @@ int	fork_array_setup(t_app_data *app)
 	return (0);
 }
 
-int	philo_array_setup(t_app_data *app)
+static void assign_forks(t_philo *philo_array, t_fork *fork_array,
+	int nbr_philos, int i)
+{
+	if (i == 0 || ((i % 2) == 0))
+	{
+		philo_array[i].right_fork = &fork_array[i];
+		philo_array[i].left_fork = &fork_array[(i + 1) % nbr_philos];
+	}
+	else
+	{
+		philo_array[i].left_fork = &fork_array[i];
+		philo_array[i].right_fork = &fork_array[(i + 1) % nbr_philos];
+	}
+}
+
+static int	philo_array_setup(t_app_data *app)
 {
 	int	i;
 
@@ -62,7 +62,7 @@ int	philo_array_setup(t_app_data *app)
 		app->philo_array[i].has_reached_limit_nbr_meals = false;
 		app->philo_array[i].last_meal_time = -1;
 		app->philo_array[i].app = app;
-		// TODO: assign forks
+		assign_forks(app->philo_array, app->fork_array, app->nbr_philos, i);
 		i++;
 	}
 	return (0);
@@ -77,10 +77,4 @@ int	app_setup(int argc, char **argv, t_app_data *app)
 	if (philo_array_setup(app))
 		return (3);
 	return (0);
-}
-
-void	app_destroy(t_app_data *app)
-{
-	app->nbr_philos = 1;
-	// TODO
 }
