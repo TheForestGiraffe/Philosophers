@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 20:54:31 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/02 10:49:05 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/02 11:37:21 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char **argv)
 		app_destroy(&app);
 		return (rc);
 	}
-	rc = run_dinner_simulation(app);
+	rc = run_dinner_simulation(&app);
 	app_destroy(&app);
 	return (rc);
 }

@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   app_init.c                                         :+:      :+:    :+:   */
+/*   run_philo_i_thread.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/02 11:23:54 by pecavalc         ###   ########.fr       */
+/*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
+/*   Updated: 2026/03/02 11:53:18 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <stddef.h>
 #include "philo.h"
+#include <stddef.h>
 
-void	app_init(t_app_data *app)
+void	*run_philo_i_thread(void *philo_i)
 {
-	app->nbr_philos = 0;
-	app->minimum_time_allowed = 60;
-	app->time_to_die = 0;
-	app->time_to_eat = 0;
-	app->time_to_sleep = 0;
-	app->has_limit_nbr_meals = false;
-	app->limit_nbr_meals = 0;
-	app->simulation_start_time = 0;
-	app->stop_simulation = false;
-	app->philos = NULL;
-	app->forks = NULL;
-	app->all_threads_ready = false;
+	t_philo	*philo;
+
+	philo = (t_philo *)philo_i;
+	
+	return (NULL); // TODO.
 }

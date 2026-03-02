@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/02 10:51:21 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/02 11:43:53 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,19 @@ typedef struct s_philo
 
 struct s_app_data
 {
-	long	nbr_philos;
-	long	minimum_time_allowed;
-	long	time_to_die;
-	long	time_to_eat;
-	long	time_to_sleep;
-	bool	has_limit_nbr_meals;
-	long	limit_nbr_meals;
-	long	simulation_start_time;
-	bool	stop_simulation_flag; 		// When a philo dies, or all are full
-	t_philo	*philos;
-	t_fork	*forks;
+	long			nbr_philos;
+	long			minimum_time_allowed;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
+	bool			has_limit_nbr_meals;
+	long			limit_nbr_meals;
+	long			simulation_start_time;
+	bool			stop_simulation; 		// When a philo dies, or all are full	
+	t_philo			*philos;
+	t_fork			*forks;
+	bool			all_threads_ready;
+	pthread_mutex_t	app_mutex;
 };
 
 // app.c
@@ -66,5 +68,8 @@ long	get_time_ms(void);
 
 // run_dinner_simulation.c
 int		run_dinner_simulation(t_app_data *app);
+
+// run_philo_routine.c
+void	*run_philo_i_thread(void *philo_i);
 
 #endif
