@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/01 01:18:17 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/02 10:14:05 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,67 +15,69 @@
 #include <pthread.h>
 #include "philo.h"
 
-static int	fork_array_setup(t_app_data *app)
+static t_fork	*forks_create(long nbr_philos)
 {
-	int	i;
-	
-	app->fork_array = malloc(sizeof(t_fork) * (size_t)app->nbr_philos);
-	if (!app->fork_array)
-		return (1);
+	t_fork	*forks;
+	int		i;
+
+	forks = malloc(sizeof(t_fork) * (size_t)nbr_philos);
+	if (!forks)
+		return (NULL);
 	i = 0;
-	while (i < app->nbr_philos)
+	while (i < nbr_philos)
 	{
-		if (pthread_mutex_init(&app->fork_array[i].fork_mutex, NULL))
-			return (2);
-		app->fork_array[i].fork_id = i;
+		if (pthread_mutex_init(&forks[i].fork_mutex, NULL))
+			return (NULL);
+		forks[i].fork_id = i;
 		i++;
 	}
-	return (0);
+	return (forks);
 }
 
-static void assign_forks(t_philo *philo_array, t_fork *fork_array,
-	int nbr_philos, int i)
+static void	assign_forks(int i, t_philo *philos, t_fork *forks, long nbr_philos)
 {
 	if ((i % 2) == 0)
 	{
-		philo_array[i].right_fork = &fork_array[i];
-		philo_array[i].left_fork = &fork_array[(i + 1) % nbr_philos];
+		philos[i].first_fork = &forks[i];
+		philos[i].second_fork = &forks[(i + 1) % nbr_philos];
 	}
 	else
 	{
-		philo_array[i].left_fork = &fork_array[i];
-		philo_array[i].right_fork = &fork_array[(i + 1) % nbr_philos];
+		philos[i].first_fork = &forks[(i + 1) % nbr_philos];
+		philos[i].second_fork = &forks[i];
 	}
 }
 
-static int	philo_array_setup(t_app_data *app)
+static t_philo	*philos_create(t_app_data *app)
 {
-	int	i;
+	t_philo	*philos;
+	int		i;
 
-	app->philo_array = malloc(sizeof(t_philo) * (size_t)app->nbr_philos);
-	if (!app->philo_array)
-		return (1);
+	philos = malloc(sizeof(t_philo) * (size_t)app->nbr_philos);
+	if (!philos)
+		return (NULL);
 	i = 0;
 	while (i < app->nbr_philos)
 	{
-		app->philo_array[i].id = i + 1;
-		app->philo_array[i].meals_counter = 0;
-		app->philo_array[i].has_reached_limit_nbr_meals = false;
-		app->philo_array[i].last_meal_time = -1;
-		app->philo_array[i].app = app;
-		assign_forks(app->philo_array, app->fork_array, app->nbr_philos, i);
-		i++;
+		philos[i].id = i + 1;
+		philos[i].meals_counter = 0;
+		philos[i].has_reached_limit_nbr_meals = false;
+		philos[i].last_meal_time = -1;
+		philos[i].app = app;
+		assign_forks(i, app->philos, app->forks, app->nbr_philos);
 	}
-	return (0);
+	return (philos);
 }
 
 int	app_setup(int argc, char **argv, t_app_data *app)
 {
 	if (parse_input(argc, argv, app))
 		return (1);
-	if (fork_array_setup(app))
-		return (2);	
-	if (philo_array_setup(app))
+	app->forks = forks_create(app->nbr_philos);
+	if (!app->forks)
+		return (2);
+	app->philos = philos_create(app);
+	if (!app->philos)
 		return (3);
 	return (0);
 }
