@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 16:21:03 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/02/28 22:59:20 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/02 10:42:15 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,23 @@ int	ft_strtol(const char *str, long *number)
 	int				sign;
 	int				digit;
 	unsigned long	result;
+	int				rc;
 
 	if (!str)
 		return (1);
-	if (validate_first_characters(str, &sign, &i))
-		return (2);
+	rc = validate_first_characters(str, &sign, &i);
+	if (rc)
+		return (rc);
 	result = 0;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		digit = str[i++] - '0';
 		if (result > (max_number(sign) - digit) / 10)
-			return (3);
+			return (2);
 		result = result * 10 + digit;
 	}
 	if (str[i] != '\0')
-		return (4);
+		return (3);
 	*number = (long)result * sign;
 	return (0);
 }
