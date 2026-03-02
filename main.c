@@ -6,23 +6,27 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 20:54:31 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/01 00:18:32 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/02 10:49:05 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+// TODO: Implement app_destroy.c
+
 int	main(int argc, char **argv)
 {
 	t_app_data	app;
+	int			rc;
 
 	app_init(&app);
-	if(app_setup(argc, argv, &app))
+	rc = app_setup(argc, argv, &app);
+	if (rc)
 	{
-		app_destroy(&app); // TODO
-		return (1);
+		app_destroy(&app);
+		return (rc);
 	}
-	// TODO: run_simulation(&app);
+	rc = run_dinner_simulation(app);
 	app_destroy(&app);
-	return (0);
+	return (rc);
 }
