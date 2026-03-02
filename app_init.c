@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/02 09:51:20 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/02 10:22:24 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stddef.h>
 #include "philo.h"
 
-void app_init(t_app_data *app)
+void	app_init(t_app_data *app)
 {
 	app->nbr_philos = 0;
 	app->minimum_time_allowed = 60;
