@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/02 11:43:53 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/02 15:09:12 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,28 +48,30 @@ struct s_app_data
 	bool			has_limit_nbr_meals;
 	long			limit_nbr_meals;
 	long			simulation_start_time;
-	bool			stop_simulation; 		// When a philo dies, or all are full	
+	bool			stop_simulation;
 	t_philo			*philos;
 	t_fork			*forks;
 	bool			all_threads_ready;
 	pthread_mutex_t	app_mutex;
 };
 
-// app.c
-void	app_init(t_app_data *app);
-int		app_setup(int argc, char **argv, t_app_data *app);
-void	app_destroy(t_app_data *app);
+// app_create.c
+t_app_data	*app_create(int argc, char **argv);
+
+// app_destroy.c
+void		app_destroy(t_app_data *app);
+void		forks_destroy(t_app_data *app);
 
 // parse_input.c
-int		parse_input(int argc, char **argv, t_app_data *app);
+int			parse_input(int argc, char **argv, t_app_data *app);
 
 // get_time_ms.c
-long	get_time_ms(void);
+long		get_time_ms(void);
 
 // run_dinner_simulation.c
-int		run_dinner_simulation(t_app_data *app);
+int			run_dinner_simulation(t_app_data *app);
 
 // run_philo_routine.c
-void	*run_philo_i_thread(void *philo_i);
+void		*run_philo_i_thread(void *philo_i);
 
 #endif

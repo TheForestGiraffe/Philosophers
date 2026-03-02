@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   app_setup.c                                        :+:      :+:    :+:   */
+/*   app_create.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/02 10:14:05 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/02 15:09:57 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,6 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include "philo.h"
-
-static t_fork	*forks_create(long nbr_philos)
-{
-	t_fork	*forks;
-	int		i;
-
-	forks = malloc(sizeof(t_fork) * (size_t)nbr_philos);
-	if (!forks)
-		return (NULL);
-	i = 0;
-	while (i < nbr_philos)
-	{
-		if (pthread_mutex_init(&forks[i].fork_mutex, NULL))
-			return (NULL);
-		forks[i].fork_id = i;
-		i++;
-	}
-	return (forks);
-}
 
 static void	assign_forks(int i, t_philo *philos, t_fork *forks, long nbr_philos)
 {
@@ -51,7 +32,7 @@ static void	assign_forks(int i, t_philo *philos, t_fork *forks, long nbr_philos)
 static t_philo	*philos_create(t_app_data *app)
 {
 	t_philo	*philos;
-	int		i;
+	long	i;
 
 	philos = malloc(sizeof(t_philo) * (size_t)app->nbr_philos);
 	if (!philos)
@@ -64,20 +45,72 @@ static t_philo	*philos_create(t_app_data *app)
 		philos[i].has_reached_limit_nbr_meals = false;
 		philos[i].last_meal_time = -1;
 		philos[i].app = app;
-		assign_forks(i, app->philos, app->forks, app->nbr_philos);
+		assign_forks(i, philos, app->forks, app->nbr_philos);
+		i++;
 	}
 	return (philos);
 }
 
-int	app_setup(int argc, char **argv, t_app_data *app)
+static t_fork	*forks_create(long nbr_philos)
 {
+	t_fork	*forks;
+	long	i;
+
+	forks = malloc(sizeof(t_fork) * (size_t)nbr_philos);
+	if (!forks)
+		return (NULL);
+	i = 0;
+	while (i < nbr_philos)
+	{
+		if (pthread_mutex_init(&forks[i].fork_mutex, NULL))
+		{
+			while (i > 0)
+				pthread_mutex_destroy(&forks[--i].fork_mutex);
+			free(forks);
+			return (NULL);
+		}
+		forks[i].fork_id = (int)i;
+		i++;
+	}
+	return (forks);
+}
+
+static void	app_init(t_app_data *app)
+{
+	app->minimum_time_allowed = 60;
+	app->has_limit_nbr_meals = false;
+	app->limit_nbr_meals = 0;
+	app->stop_simulation = false;
+	app->philos = NULL;
+	app->forks = NULL;
+	app->all_threads_ready = false;
+}
+
+t_app_data	*app_create(int argc, char **argv)
+{
+	t_app_data	*app;
+
+	app = malloc(sizeof(t_app_data));
+	if (!app)
+		return (NULL);
+	app_init(app);
 	if (parse_input(argc, argv, app))
-		return (1);
+	{
+		free(app);
+		return (NULL);
+	}
 	app->forks = forks_create(app->nbr_philos);
 	if (!app->forks)
-		return (2);
+	{
+		free(app);
+		return (NULL);
+	}
 	app->philos = philos_create(app);
 	if (!app->philos)
-		return (3);
-	return (0);
+	{
+		forks_destroy(app);
+		free(app);
+		return (NULL);
+	}
+	return (app);
 }

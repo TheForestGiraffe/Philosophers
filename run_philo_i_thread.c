@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/02 11:53:18 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/02 13:55:57 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ void	*run_philo_i_thread(void *philo_i)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_i;
-	
+
 	return (NULL); // TODO.
 }

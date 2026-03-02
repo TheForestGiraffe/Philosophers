@@ -6,22 +6,20 @@
 #    By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/07 15:25:57 by pecavalc          #+#    #+#              #
-#    Updated: 2026/03/02 11:45:54 by pecavalc         ###   ########.fr        #
+#    Updated: 2026/03/02 15:00:52 by pecavalc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-SRC = 	app_init.c \
-		app_setup.c \
+SRC = 	app_create.c \
 		app_destroy.c \
 		main.c \
 		parse_input.c \
 		run_dinner_simulation.c \
 		run_philo_i_thread.c
 
-OBJ = 	app_init.o \
-		app_setup.o \
+OBJ = 	app_create.o \
 		app_destroy.o \
 		main.o \
 		parse_input.o \
