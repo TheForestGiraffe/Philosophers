@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/01 00:42:31 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/02 09:51:20 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ void app_init(t_app_data *app)
 	app->limit_nbr_meals = 0;
 	app->simulation_start_time = 0;
 	app->stop_simulation_flag = false;
-	app->philo_array = NULL;
-	app->fork_array = NULL;
+	app->philos = NULL;
+	app->forks = NULL;
 }

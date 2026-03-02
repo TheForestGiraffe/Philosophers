@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/01 00:14:38 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/02 09:51:09 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ typedef struct s_philo
 	long		meals_counter;
 	bool		has_reached_limit_nbr_meals;
 	long		last_meal_time;
-	t_fork		*left_fork;
-	t_fork		*right_fork;
+	t_fork		*first_fork;
+	t_fork		*second_fork;
 	pthread_t	thread_id;
 	t_app_data	*app;
 }				t_philo;
@@ -49,8 +49,8 @@ struct s_app_data
 	long	limit_nbr_meals;
 	long	simulation_start_time;
 	bool	stop_simulation_flag; 		// When a philo dies, or all are full
-	t_philo	*philo_array;
-	t_fork	*fork_array;
+	t_philo	*philos;
+	t_fork	*forks;
 };
 
 // app.c
