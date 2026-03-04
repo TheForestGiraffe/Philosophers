@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 10:17:49 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/02 11:53:19 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/04 20:42:47 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ int	run_dinner_simulation(t_app_data *app)
 			return (rc);
 		i++;
 	}
+
+	// start simulation
+	app->simulation_start_time = get_time_ms();
 
 	// Set all threads ready flag as true
 	rc = pthread_mutex_lock(&app->app_mutex);
