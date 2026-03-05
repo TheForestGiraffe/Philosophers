@@ -6,59 +6,74 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/05 12:01:50 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/05 12:48:10 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stddef.h>
+#include <unistd.h>
 
-int	get_app_stop_simulation(t_app_data *app, bool *out)
+static int	spinlock_while_all_threads_are_ready(t_app_data *app)
+{
+	int	rc;
+
+	while (1)
+	{
+		rc = pthread_mutex_lock(&app->app_mutex);
+		if (rc)
+			return (rc);
+		if (app->are_all_threads_ready)
+		{
+			rc = pthread_mutex_unlock(&app->app_mutex);
+			if (rc)
+				return (rc);
+			break;
+		}
+		rc = pthread_mutex_unlock(&app->app_mutex);
+		if (rc)
+			return (rc);
+		usleep(50);
+	}
+	return (0);
+}
+	
+static int	get_has_simulation_ended(t_app_data *app, bool *out)
 {
 	int	rc;
 
 	rc = pthread_mutex_lock(&app->app_mutex);
-	if (!rc)
+	if (rc)
 		return (rc);
-	*out = app->stop_simulation;
+	*out = app->has_simulation_ended;
 	rc = pthread_mutex_unlock(&app->app_mutex);
-	if (!rc)
+	if (rc)
 		return (rc);
 	return (0);
 }
 
 void	*run_philo_thread(void *philo_i)
 {
-	t_philo	*philo;
-	bool	stop_simulation;
 	int		rc;
-	
+	t_philo	*philo;
+	bool	has_simulation_ended;
+
 	philo = (t_philo *)philo_i;
-	
-	// Thread start sync - spinlock: Wait for all threads to be ready
+	rc = spinlock_while_all_threads_are_ready(philo->app);
+	if (rc)
+		return (NULL);
 	while (1)
 	{
-		if (pthread_mutex_lock(&philo->app->app_mutex))
+		rc = get_has_simulation_ended(philo->app, &has_simulation_ended);
+		if (rc)
 			return (NULL);
-		if (philo->app->all_threads_ready)
-		{
-			if (pthread_mutex_unlock(&philo->app->app_mutex));
-				return (NULL);
-			break;
-		}
-		if (pthread_mutex_unlock(&philo->app->app_mutex))
-			return (NULL);
+		if (has_simulation_ended)
+			break ;
+		// Todo:
+		//  - Check if full
+		//  - Eat
+		//  - Sleep - write status and usleep
+		//  - Think	
 	}
-
-	// Check if simulation has ended
-	rc = get_app_stop_simulation(philo->app, &stop_simulation);
-	if (!rc)
-		return (NULL);
-	while (!stop_simulation)
-	{
-		
-	}
-		
 	return (NULL); // TODO: (NULL?) how to properly return from a thread and catch it.
 }
 
