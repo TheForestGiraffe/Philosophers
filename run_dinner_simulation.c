@@ -6,19 +6,18 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 10:17:49 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/05 12:02:13 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/05 15:41:06 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <pthread.h>
 
-int	run_dinner_simulation(t_app_data *app)
+static int	create_philo_threads(t_app_data *app)
 {
-	int	i;
-	int	rc;
-
-	// Create all threads
+	int		rc;
+	long	i;
+	
 	i = 0;
 	while (i < app->nbr_philos)
 	{
@@ -28,11 +27,13 @@ int	run_dinner_simulation(t_app_data *app)
 			return (rc);
 		i++;
 	}
+	return (0);
+}
 
-	// start simulation
-	app->simulation_start_time = get_time_ms();
+static int	set_all_threads_are_ready(t_app_data *app)
+{
+	int	rc;
 
-	// Set all threads ready flag as true
 	rc = pthread_mutex_lock(&app->app_mutex);
 	if (rc)
 		return (rc);
@@ -40,9 +41,31 @@ int	run_dinner_simulation(t_app_data *app)
 	rc = pthread_mutex_unlock(&app->app_mutex);
 	if (rc)
 		return (rc);
- 
-	// create monitor thread
-	// synchronize simulatio begin
+	return (0);
+}
 
+int	run_dinner_simulation(t_app_data *app)
+{
+	long	i;
+	int		rc;
+
+	rc = create_philo_threads(app);
+	if (rc)
+		return (rc);
+	
+	// TODO: Create monitor thread
+
+	app->simulation_start_time = get_time_ms();
+	rc = set_all_threads_are_ready(app);
+	if (rc)
+		return (rc);
+	i = 0;
+	while (i < app->nbr_philos)
+	{
+		rc = pthread_join(app->philos[i].thread_id, NULL);
+		if (rc)
+			return (rc);
+		i++;
+	}
 	return (0);
 }

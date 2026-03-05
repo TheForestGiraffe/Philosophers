@@ -6,14 +6,28 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/05 12:48:10 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/05 15:48:13 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <unistd.h>
 
-static int	spinlock_while_all_threads_are_ready(t_app_data *app)
+static int	get_has_reached_limit_nbr_meals(t_philo *philo, bool *out)
+{
+	int	rc;
+
+	rc = pthread_mutex_lock(&philo->philo_mutex);
+	if (rc)
+		return (rc);
+	*out = philo->has_reached_limit_nbr_meals;
+	rc = pthread_mutex_unlock(&philo->philo_mutex);
+	if (rc)
+		return (rc);
+	return (0);
+}
+
+static int	spinlock_until_all_threads_are_ready(t_app_data *app)
 {
 	int	rc;
 
@@ -22,12 +36,12 @@ static int	spinlock_while_all_threads_are_ready(t_app_data *app)
 		rc = pthread_mutex_lock(&app->app_mutex);
 		if (rc)
 			return (rc);
-		if (app->are_all_threads_ready)
+		if (app->all_threads_ready)
 		{
 			rc = pthread_mutex_unlock(&app->app_mutex);
 			if (rc)
 				return (rc);
-			break;
+			break ;
 		}
 		rc = pthread_mutex_unlock(&app->app_mutex);
 		if (rc)
@@ -36,7 +50,7 @@ static int	spinlock_while_all_threads_are_ready(t_app_data *app)
 	}
 	return (0);
 }
-	
+
 static int	get_has_simulation_ended(t_app_data *app, bool *out)
 {
 	int	rc;
@@ -55,25 +69,31 @@ void	*run_philo_thread(void *philo_i)
 {
 	int		rc;
 	t_philo	*philo;
-	bool	has_simulation_ended;
+	bool	stop_thread;
 
 	philo = (t_philo *)philo_i;
-	rc = spinlock_while_all_threads_are_ready(philo->app);
+	stop_thread = false;
+	rc = spinlock_until_all_threads_are_ready(philo->app);
 	if (rc)
 		return (NULL);
 	while (1)
 	{
-		rc = get_has_simulation_ended(philo->app, &has_simulation_ended);
+		rc = get_has_simulation_ended(philo->app, &stop_thread);
 		if (rc)
 			return (NULL);
-		if (has_simulation_ended)
+		if (stop_thread)
 			break ;
+		rc = get_has_reached_limit_nbr_meals(philo, &stop_thread);
+		if (rc)
+			return (NULL);
+		if (stop_thread)
+			break ;
+		
 		// Todo:
-		//  - Check if full
 		//  - Eat
 		//  - Sleep - write status and usleep
 		//  - Think	
 	}
-	return (NULL); // TODO: (NULL?) how to properly return from a thread and catch it.
+	return (NULL); // TODO: (NULL?) how to properly return from a thread and catch return codes.
 }
 

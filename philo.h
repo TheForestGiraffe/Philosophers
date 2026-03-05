@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/05 12:47:14 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/05 15:30:47 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,16 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
-	int			id;
-	long		meals_counter;
-	bool		has_reached_limit_nbr_meals;
-	long		last_meal_time;
-	t_fork		*first_fork;
-	t_fork		*second_fork;
-	pthread_t	thread_id;
-	t_app_data	*app;
-}				t_philo;
+	int				id;
+	long			meals_counter;
+	bool			has_reached_limit_nbr_meals;
+	long			last_meal_time;
+	t_fork			*first_fork;
+	t_fork			*second_fork;
+	pthread_t		thread_id;
+	pthread_mutex_t	philo_mutex;
+	t_app_data		*app;
+}					t_philo;
 
 // app_data owns philo and forks
 
@@ -51,7 +52,7 @@ struct s_app_data
 	bool			has_simulation_ended;
 	t_philo			*philos;
 	t_fork			*forks;
-	bool			are_all_threads_ready;
+	bool			all_threads_ready;
 	pthread_mutex_t	app_mutex;
 };
 

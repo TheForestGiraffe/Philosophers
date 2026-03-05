@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/05 12:46:54 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/05 15:30:42 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	assign_forks(int i, t_philo *philos, t_fork *forks, long nbr_philos)
 
 static t_philo	*philos_create(t_app_data *app)
 {
+	int		rc;
 	t_philo	*philos;
 	long	i;
 
@@ -46,6 +47,13 @@ static t_philo	*philos_create(t_app_data *app)
 		philos[i].last_meal_time = -1;
 		philos[i].app = app;
 		assign_forks(i, philos, app->forks, app->nbr_philos);
+		rc = pthread_mutex_init(&philos[i].philo_mutex, NULL);
+		if (rc)
+		{
+			while (i >= 0)
+				pthread_mutex_destroy(&philos[i--]);
+			return (NULL);
+		}
 		i++;
 	}
 	return (philos);
@@ -75,39 +83,55 @@ static t_fork	*forks_create(long nbr_philos)
 	return (forks);
 }
 
-static void	app_init(t_app_data *app)
+static int	app_init(t_app_data *app)
 {
+	int	rc;
+
 	app->minimum_time_allowed = 60;
 	app->has_limit_nbr_meals = false;
 	app->limit_nbr_meals = 0;
 	app->has_simulation_ended = false;
 	app->philos = NULL;
 	app->forks = NULL;
-	app->are_all_threads_ready = false;
+	app->all_threads_ready = false;
+	rc = pthread_mutex_init(&app->app_mutex, NULL);
+	if (rc)
+		return (rc);
+	return (0);
 }
 
 t_app_data	*app_create(int argc, char **argv)
 {
+	int			rc;
 	t_app_data	*app;
 
 	app = malloc(sizeof(t_app_data));
 	if (!app)
 		return (NULL);
-	app_init(app);
-	if (parse_input(argc, argv, app))
+	rc = app_init(app);
+	if (rc)
 	{
+		free(app);
+		return (NULL);
+	}
+	rc = parse_input(argc, argv, app);
+	if (rc)
+	{
+		pthread_mutex_destroy(&app->app_mutex);
 		free(app);
 		return (NULL);
 	}
 	app->forks = forks_create(app->nbr_philos);
 	if (!app->forks)
 	{
+		pthread_mutex_destroy(&app->app_mutex);
 		free(app);
 		return (NULL);
 	}
 	app->philos = philos_create(app);
 	if (!app->philos)
 	{
+		pthread_mutex_destroy(&app->app_mutex);
 		forks_destroy(app);
 		free(app);
 		return (NULL);
