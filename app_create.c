@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/02 15:09:57 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/05 12:46:54 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ static void	app_init(t_app_data *app)
 	app->minimum_time_allowed = 60;
 	app->has_limit_nbr_meals = false;
 	app->limit_nbr_meals = 0;
-	app->stop_simulation = false;
+	app->has_simulation_ended = false;
 	app->philos = NULL;
 	app->forks = NULL;
-	app->all_threads_ready = false;
+	app->are_all_threads_ready = false;
 }
 
 t_app_data	*app_create(int argc, char **argv)

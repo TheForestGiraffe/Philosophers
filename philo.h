@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/05 12:02:05 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/05 12:47:14 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ struct s_app_data
 	bool			has_limit_nbr_meals;
 	long			limit_nbr_meals;
 	long			simulation_start_time;
-	bool			stop_simulation;
+	bool			has_simulation_ended;
 	t_philo			*philos;
 	t_fork			*forks;
-	bool			all_threads_ready;
+	bool			are_all_threads_ready;
 	pthread_mutex_t	app_mutex;
 };
 
