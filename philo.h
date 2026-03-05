@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/02 15:09:12 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/05 12:02:05 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,6 @@ long		get_time_ms(void);
 int			run_dinner_simulation(t_app_data *app);
 
 // run_philo_routine.c
-void		*run_philo_i_thread(void *philo_i);
+void		*run_philo_thread(void *philo_i);
 
 #endif

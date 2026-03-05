@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 10:17:49 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/04 20:42:47 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/05 12:02:13 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	run_dinner_simulation(t_app_data *app)
 	while (i < app->nbr_philos)
 	{
 		rc = pthread_create(&app->philos[i].thread_id, NULL,
-							run_philo_i_thread, (void *)&app->philos[i]);
+							run_philo_thread, (void *)&app->philos[i]);
 		if (rc)
 			return (rc);
 		i++;
