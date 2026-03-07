@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 12:20:50 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 13:33:32 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,16 @@ t_app_data	*app_create(int argc, char **argv);
 void		app_destroy(t_app_data *app);
 void		forks_destroy(t_app_data *app);
 
+// app.c
+int			get_has_simulation_ended(t_app_data *app, bool *out);
+
 // parse_input.c
 int			parse_input(int argc, char **argv, t_app_data *app);
 
 // time_utils.c
 long		get_time_ms(void);
 long		get_time_us(void);
+int			feedback_based_usleep(long sleep_time_us, t_app_data *app);
 
 // run_dinner_simulation.c
 int			run_dinner_simulation(t_app_data *app);

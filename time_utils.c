@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   time_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pecavalc <pecavalc@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 14:49:42 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 12:21:34 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 13:32:36 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
 #include <stddef.h>
+#include <stdbool.h>
+#include "philo.h"
 
 long	get_time_ms(void)
 {
@@ -33,7 +35,31 @@ long	get_time_us(void)
 	return (time_us);
 }
 
-/*	TODO: Preciser usleep function
-	It uses usleep for the majority of time, which is not CPU intensive
-	And for the last microseconds it uses spinlock, which is CPU intensive */
+int	feedback_based_usleep(long sleep_time_us, t_app_data *app)
+{
+	int		rc;
+	long	start_time;
+	long	elapsed_time;
+	long	remaining_time;
+	bool	stop;
 
+	start_time = get_time_us();
+	while (1)
+	{
+		rc = get_has_simulation_finished(app->has_simulation_ended, &stop);
+		if (rc)
+			return (rc);
+		if (stop)
+			break ;
+		elapsed_time = get_time_us() - start_time; 
+		if (elapsed_time >= sleep_time_us)
+			break ;
+		remaining_time = sleep_time_us - elapsed_time;
+		if (remaining_time > 500)
+			usleep(remaining_time / 2);
+		else
+			while ((get_time_us() - start_time) <= sleep_time_us)
+				;
+	}
+	return (0);
+}
