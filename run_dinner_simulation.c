@@ -6,12 +6,13 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 10:17:49 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 21:23:44 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 23:05:28 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <pthread.h>
+#include <stdio.h>
 
 int	stop_simulation_and_release_threads(t_app_data *app)
 {
@@ -90,11 +91,25 @@ static int	set_all_threads_ready(t_app_data *app)
 	return (0);
 }
 
+static void	simulate_single_philo(long time_to_die)
+{
+	printf("0 1 has taken a fork\n");
+	printf("%ld 1 died\n", time_to_die);
+}
+
 int	run_dinner_simulation(t_app_data *app)
 {
 	int	rc;
 	int	cleanup_rc;
 
+	// for a single philosopher:
+	if (app->nbr_philos == 1)
+	{
+		simulate_single_philo(app->time_to_die);
+		return (0);
+	}
+
+	// when philo > 1
 	rc = create_philo_threads(app);
 	if (rc)
 		return (rc);

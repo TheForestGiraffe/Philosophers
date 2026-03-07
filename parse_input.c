@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:39:13 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/02 10:43:28 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 23:05:09 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static int	convert_and_validate_first_arguments(char **argv, t_app_data *app)
 		printf("One or more arguments are invalid.\n");
 		return (1);
 	}
-	if (app->nbr_philos < 2)
+	if (app->nbr_philos < 1)
 	{
-		printf("The number of philosophers must be at least 2.");
+		printf("The number of philosophers must be at least 1.");
 		return (2);
 	}
 	if (app->time_to_die < app->minimum_time_allowed
