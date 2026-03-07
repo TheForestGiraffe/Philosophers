@@ -6,13 +6,14 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 14:49:42 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 13:32:36 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 16:59:55 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <unistd.h>
 #include "philo.h"
 
 long	get_time_ms(void)
@@ -46,7 +47,7 @@ int	feedback_based_usleep(long sleep_time_us, t_app_data *app)
 	start_time = get_time_us();
 	while (1)
 	{
-		rc = get_has_simulation_finished(app->has_simulation_ended, &stop);
+		rc = get_has_simulation_ended(app, &stop);
 		if (rc)
 			return (rc);
 		if (stop)
