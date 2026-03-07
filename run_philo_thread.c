@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/05 15:48:13 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 13:34:14 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,6 @@ static int	spinlock_until_all_threads_are_ready(t_app_data *app)
 	return (0);
 }
 
-static int	get_has_simulation_ended(t_app_data *app, bool *out)
-{
-	int	rc;
-
-	rc = pthread_mutex_lock(&app->app_mutex);
-	if (rc)
-		return (rc);
-	*out = app->has_simulation_ended;
-	rc = pthread_mutex_unlock(&app->app_mutex);
-	if (rc)
-		return (rc);
-	return (0);
-}
-
 void	*run_philo_thread(void *philo_i)
 {
 	int		rc;
@@ -76,6 +62,9 @@ void	*run_philo_thread(void *philo_i)
 	rc = spinlock_until_all_threads_are_ready(philo->app);
 	if (rc)
 		return (NULL);
+	
+	// TODO: set last mean time
+
 	while (1)
 	{
 		rc = get_has_simulation_ended(philo->app, &stop_thread);
