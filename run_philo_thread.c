@@ -6,26 +6,26 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 16:49:36 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 17:03:21 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <unistd.h>
 
-static int	eat(t_philo *philo)
+static int	philo_eat(t_philo *philo)
 {
 	int	rc;
 
 	// Take (lock) forks
-	rc = pthread_mutex_lock(philo->first_fork);
+	rc = pthread_mutex_lock(&philo->first_fork->fork_mutex);
 	if (rc)
 		return (rc);
 	thread_safe_print(TOOK_FIRST_FORK, philo);
-	rc = pthread_mutex_lock(philo->second_fork);
+	rc = pthread_mutex_lock(&philo->second_fork->fork_mutex);
 	if (rc)
 	{
-		pthread_mutex_unlock(philo->first_fork);
+		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 		return (rc);
 	}
 	thread_safe_print(TOOK_SECOND_FORK, philo);
@@ -34,7 +34,7 @@ static int	eat(t_philo *philo)
 	rc = pthread_mutex_lock(&philo->philo_mutex);
 	if (rc)
 		return (rc);
-	philo->last_meal_time = get_time_ms;
+	philo->last_meal_time = get_time_ms();
 	feedback_based_usleep(philo->app->time_to_eat, philo->app);
 	philo->meals_counter++;
 	if (philo->meals_counter > 0
@@ -42,15 +42,16 @@ static int	eat(t_philo *philo)
 		philo->has_reached_limit_nbr_meals = true;
 	
 	// Release (unlock) forks
-	rc = pthread_mutex_unlock(philo->first_fork);
+	rc = pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 	if (rc)
 		return (rc);
-	rc = pthread_mutex_unlock(philo->second_fork);
+	rc = pthread_mutex_unlock(&philo->second_fork->fork_mutex);
 	if (rc)
 		return (rc);
+	return (0);
 }
 
-static int	sleep(t_philo *philo)
+static int	philo_sleep(t_philo *philo)
 {
 	int	rc;
 	
@@ -62,7 +63,7 @@ static int	sleep(t_philo *philo)
 }
 
 // TODO
-static int	think(t_philo *philo)
+static int	philo_think(t_philo *philo)
 {
 	int	rc;
 
@@ -122,7 +123,7 @@ void	*run_philo_thread(void *philo_i)
 	if (rc)
 		return (NULL);
 	
-	// TODO: set last meal time
+	// TODO: Set last meal time
 
 	while (1)
 	{
@@ -136,16 +137,16 @@ void	*run_philo_thread(void *philo_i)
 			return (NULL);
 		if (stop_thread)
 			break ;
-		rc = eat(philo);
+		rc = philo_eat(philo);
 		if (rc)
-			return (rc);		
-		rc = sleep(philo);
+			return (NULL);		
+		rc = philo_sleep(philo);
 		if (rc)
-			return (rc);
+			return (NULL);
 		// TODO: think
-		rc = think(philo);
+		rc = philo_think(philo);
 		if (rc)
-			return (rc);
+			return (NULL);
 	}
 	return (NULL); // TODO: (NULL?) how to properly return from a thread and catch return codes.
 }
