@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 14:33:51 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 16:51:03 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static t_philo	*philos_create(t_app_data *app)
 		if (rc)
 		{
 			while (i >= 0)
-				pthread_mutex_destroy(&philos[i--]);
+				pthread_mutex_destroy(&philos[i--].philo_mutex);
 			return (NULL);
 		}
 		i++;
