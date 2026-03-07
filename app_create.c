@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/05 15:30:42 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 14:33:51 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,12 @@ static int	app_init(t_app_data *app)
 	rc = pthread_mutex_init(&app->app_mutex, NULL);
 	if (rc)
 		return (rc);
+	rc = pthread_mutex_init(&app->print_mutex, NULL);
+	if (rc)
+	{
+		pthread_mutex_destroy(&app->app_mutex);
+		return (rc);
+	}
 	return (0);
 }
 
@@ -118,6 +124,7 @@ t_app_data	*app_create(int argc, char **argv)
 	if (rc)
 	{
 		pthread_mutex_destroy(&app->app_mutex);
+		pthread_mutex_destroy(&app->print_mutex);
 		free(app);
 		return (NULL);
 	}
@@ -125,6 +132,7 @@ t_app_data	*app_create(int argc, char **argv)
 	if (!app->forks)
 	{
 		pthread_mutex_destroy(&app->app_mutex);
+		pthread_mutex_destroy(&app->print_mutex);
 		free(app);
 		return (NULL);
 	}
@@ -132,6 +140,7 @@ t_app_data	*app_create(int argc, char **argv)
 	if (!app->philos)
 	{
 		pthread_mutex_destroy(&app->app_mutex);
+		pthread_mutex_destroy(&app->print_mutex);
 		forks_destroy(app);
 		free(app);
 		return (NULL);

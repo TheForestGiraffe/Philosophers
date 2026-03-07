@@ -6,23 +6,33 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 13:33:32 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 14:26:08 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-#include <pthread.h>
-#include <stdbool.h>
+# include <pthread.h>
+# include <stdbool.h>
 
-typedef struct s_app_data t_app_data;
+typedef struct s_app_data	t_app_data;
 
 typedef struct s_fork
 {
 	pthread_mutex_t	fork_mutex;
 	int				fork_id;
 }					t_fork;
+
+typedef enum e_philo_status
+{
+	IS_EATING,
+	IS_SLEEPING,
+	IS_THINKING,
+	TOOK_FIRST_FORK,
+	TOOK_SECOND_FORK,
+	HAS_DIED,
+}				t_philo_status;
 
 typedef struct s_philo
 {
@@ -54,6 +64,7 @@ struct s_app_data
 	t_fork			*forks;
 	bool			all_threads_ready;
 	pthread_mutex_t	app_mutex;
+	pthread_mutex_t	print_mutex;
 };
 
 // app_create.c
