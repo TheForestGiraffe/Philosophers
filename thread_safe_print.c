@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 14:08:21 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 16:14:15 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 16:58:28 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	thread_safe_print(t_philo_status philo_status, t_philo *philo)
 	rc = pthread_mutex_lock(&philo->app->print_mutex);
 	if (rc)
 		return (rc);
-	elapsed_time = get_time_ms - philo->app->simulation_start_time;
+	elapsed_time = get_time_ms() - philo->app->simulation_start_time;
 	rc = get_has_simulation_ended(philo->app, &stop);
 	if (rc)
 		return (rc);
