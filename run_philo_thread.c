@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 22:57:21 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 23:00:44 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,10 +139,6 @@ static int	get_has_reached_limit_nbr_meals(t_philo *philo, bool *out)
 	rc = pthread_mutex_unlock(&philo->philo_mutex);
 	if (rc)
 		return (rc);
-	if (*out == true)
-	{
-		thread_safe_print()
-	}
 	return (0);
 }
 
