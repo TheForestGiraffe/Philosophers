@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 12:08:16 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 12:20:50 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int			parse_input(int argc, char **argv, t_app_data *app);
 
 // time_utils.c
 long		get_time_ms(void);
+long		get_time_us(void);
 
 // run_dinner_simulation.c
 int			run_dinner_simulation(t_app_data *app);
