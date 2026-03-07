@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/05 15:30:47 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 12:08:16 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void		forks_destroy(t_app_data *app);
 // parse_input.c
 int			parse_input(int argc, char **argv, t_app_data *app);
 
-// get_time_ms.c
+// time_utils.c
 long		get_time_ms(void);
 
 // run_dinner_simulation.c
