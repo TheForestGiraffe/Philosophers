@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 16:15:16 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 20:54:22 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,10 @@ struct s_app_data
 	t_philo			*philos;
 	t_fork			*forks;
 	bool			all_threads_ready;
+	long			nbr_threads_running;
 	pthread_mutex_t	app_mutex;
 	pthread_mutex_t	print_mutex;
+	pthread_t		monitor;
 };
 
 // app_create.c
@@ -87,11 +89,15 @@ int			feedback_based_usleep(long sleep_time_us, t_app_data *app);
 
 // run_dinner_simulation.c
 int			run_dinner_simulation(t_app_data *app);
+int			stop_simulation_and_release_threads(t_app_data *app);
 
 // run_philo_routine.c
 void		*run_philo_thread(void *philo_i);
 
 // thread_safe_print.c
 int			thread_safe_print(t_philo_status philo_status, t_philo *philo);
+
+// run_monitor_thread.
+void		*run_monitor_thread(void *data);
 
 #endif

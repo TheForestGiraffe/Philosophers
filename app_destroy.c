@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/05 14:52:32 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 21:23:01 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	forks_destroy(t_app_data *app)
 void	app_destroy(t_app_data *app)
 {
 	pthread_mutex_destroy(&app->app_mutex);
+	pthread_mutex_destroy(&app->print_mutex);
 	forks_destroy(app);
 	philos_destroy(app);
 	free(app);

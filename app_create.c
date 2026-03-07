@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 16:51:03 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 21:22:26 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ static t_philo	*philos_create(t_app_data *app)
 		rc = pthread_mutex_init(&philos[i].philo_mutex, NULL);
 		if (rc)
 		{
-			while (i >= 0)
-				pthread_mutex_destroy(&philos[i--].philo_mutex);
+			while (i > 0)
+				pthread_mutex_destroy(&philos[--i].philo_mutex);
+			free(philos);
 			return (NULL);
 		}
 		i++;
@@ -94,6 +95,7 @@ static int	app_init(t_app_data *app)
 	app->philos = NULL;
 	app->forks = NULL;
 	app->all_threads_ready = false;
+	app->nbr_threads_running = 0;
 	rc = pthread_mutex_init(&app->app_mutex, NULL);
 	if (rc)
 		return (rc);

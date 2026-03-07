@@ -6,12 +6,13 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 17:28:29 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/07 22:57:21 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <unistd.h>
+#include <pthread.h>
 
 static int	philo_eat(t_philo *philo)
 {
@@ -64,7 +65,13 @@ static int	philo_eat(t_philo *philo)
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
 		return (rc);
 	}
-	feedback_based_usleep(philo->app->time_to_eat * 1000L, philo->app);
+	rc = feedback_based_usleep(philo->app->time_to_eat * 1000L, philo->app);
+	if (rc)
+	{
+		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
+		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
+		return (rc);
+	}
 	rc = pthread_mutex_lock(&philo->philo_mutex);
 	if (rc)
 	{
@@ -86,6 +93,7 @@ static int	philo_eat(t_philo *philo)
 	
 	// Release (unlock) forks
 	rc = pthread_mutex_unlock(&philo->first_fork->fork_mutex);
+	if (rc)
 	{
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
 		return (rc);
@@ -103,7 +111,9 @@ static int	philo_sleep(t_philo *philo)
 	rc = thread_safe_print(IS_SLEEPING, philo);
 	if (rc)
 		return (rc);
-	feedback_based_usleep(philo->app->time_to_sleep * 1000L, philo->app);
+	rc = feedback_based_usleep(philo->app->time_to_sleep * 1000L, philo->app);
+	if (rc)
+		return (rc);
 	return (0);
 }
 
@@ -129,6 +139,10 @@ static int	get_has_reached_limit_nbr_meals(t_philo *philo, bool *out)
 	rc = pthread_mutex_unlock(&philo->philo_mutex);
 	if (rc)
 		return (rc);
+	if (*out == true)
+	{
+		thread_safe_print()
+	}
 	return (0);
 }
 
@@ -174,6 +188,15 @@ void	*run_philo_thread(void *philo_i)
 		return (NULL);
 	philo->last_meal_time = get_time_ms();
 	rc = pthread_mutex_unlock(&philo->philo_mutex);
+	if (rc)
+		return (NULL);
+
+	// Increment nbr_threads_running
+	rc = pthread_mutex_lock(&philo->app->app_mutex);
+	if (rc)
+		return (NULL);
+	philo->app->nbr_threads_running++;
+	rc = pthread_mutex_unlock(&philo->app->app_mutex);
 	if (rc)
 		return (NULL);
 
