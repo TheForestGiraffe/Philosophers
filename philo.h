@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/08 19:42:26 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 19:59:55 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,16 @@ struct s_app_data
 	pthread_t		monitor;
 };
 
-// app_create.c
+//	App lifecyle - app_create.c app_destroy.c
 t_app_data	*app_create(int argc, char **argv);
-
-// app_destroy.c
 void		app_destroy(t_app_data *app);
 void		forks_destroy(t_app_data *app);
 
-// app.c
+// App getters and setters:
+//		app_get_and_set.c
 int			get_has_simulation_ended(t_app_data *app, bool *out);
 int			set_simulation_ended_and_all_threads_ready(t_app_data *app);
+int			set_all_threads_ready(t_app_data *app);
 
 // parse_input.c
 int			parse_input(int argc, char **argv, t_app_data *app);

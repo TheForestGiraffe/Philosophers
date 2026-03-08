@@ -6,7 +6,7 @@
 #    By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/07 15:25:57 by pecavalc          #+#    #+#              #
-#    Updated: 2026/03/07 21:24:28 by pecavalc         ###   ########.fr        #
+#    Updated: 2026/03/08 19:58:58 by pecavalc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = philo
 
 SRC = 	app_create.c \
 		app_destroy.c \
-		app.c \
+		app_get_and_set.c \
 		main.c \
 		parse_input.c \
 		run_dinner_simulation.c \
@@ -25,7 +25,7 @@ SRC = 	app_create.c \
 
 OBJ = 	app_create.o \
 		app_destroy.o \
-		app.o \
+		app_get_and_set.o \
 		main.o \
 		parse_input.o \
 		run_dinner_simulation.o \
