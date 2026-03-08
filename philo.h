@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/08 20:20:13 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 20:44:32 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,19 @@ t_app_data	*app_create(int argc, char **argv);
 void		app_destroy(t_app_data *app);
 void		forks_destroy(t_app_data *app);
 
-// App getters and setters:
-//		app_get_and_set.c
+// App getters and setters: - app_get_and_set.c
 int			get_has_simulation_ended(t_app_data *app, bool *out);
 int			set_simulation_ended_and_all_threads_ready(t_app_data *app);
 int			set_all_threads_ready(t_app_data *app);
+
+// Philo getters and setters - philo_get_and_set.c
+int			get_has_reached_limit_nbr_meals(t_philo *philo, bool *out);
+int			set_last_meal_time(t_philo *philo);
+
+// Philo actions - philo_actions.c
+int			philo_eat(t_philo *philo);
+int			philo_sleep(t_philo *philo);
+int			philo_think(t_philo *philo);
 
 // parse_input.c
 int			parse_input(int argc, char **argv, t_app_data *app);

@@ -6,7 +6,7 @@
 #    By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/07 15:25:57 by pecavalc          #+#    #+#              #
-#    Updated: 2026/03/08 20:20:02 by pecavalc         ###   ########.fr        #
+#    Updated: 2026/03/08 20:34:52 by pecavalc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ SRC = 	app_create.c \
 		app_get_and_set.c \
 		main.c \
 		parse_input.c \
+		philo_actions.c \
+		philo_get_and_set.c \
 		run_dinner_simulation.c \
 		run_monitor_thread.c \
 		run_philo_thread.c \
@@ -28,6 +30,8 @@ OBJ = 	app_create.o \
 		app_get_and_set.o \
 		main.o \
 		parse_input.o \
+		philo_actions.o \
+		philo_get_and_set.o \
 		run_dinner_simulation.o \
 		run_monitor_thread.o \
 		run_philo_thread.o \

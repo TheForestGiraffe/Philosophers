@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 10:17:49 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/08 19:44:01 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 20:42:25 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,6 @@ static int	create_philo_threads(t_app_data *app)
 		}
 		i++;
 	}
-	return (0);
-}
-
-static int	set_all_threads_ready(t_app_data *app)
-{
-	if (pthread_mutex_lock(&app->app_mutex))
-		return (1);
-	app->all_threads_ready = true;
-	if (pthread_mutex_unlock(&app->app_mutex))
-		return (1);
 	return (0);
 }
 

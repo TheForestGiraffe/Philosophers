@@ -6,14 +6,14 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 14:08:21 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/08 20:25:06 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 20:43:36 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "philo.h"
 
-static int	print_status(t_philo_status philo_status, long philo_id,
+static void	print_status(t_philo_status philo_status, int philo_id,
 							long elapsed_time)
 {
 	if (philo_status == IS_EATING)
@@ -26,7 +26,6 @@ static int	print_status(t_philo_status philo_status, long philo_id,
 		printf("%ld %i has taken a fork\n", elapsed_time, philo_id);
 	if (philo_status == HAS_DIED)
 		printf("%ld %i died\n", elapsed_time, philo_id);
-
 }
 
 int	thread_safe_printf(t_philo_status philo_status, t_philo *philo)
@@ -48,8 +47,7 @@ int	thread_safe_printf(t_philo_status philo_status, t_philo *philo)
 			return (1);
 		return (0);
 	}
-	if (print_status(philo_status, philo->id, elapsed_time))
-		return (1);
+	print_status(philo_status, philo->id, elapsed_time);
 	if (pthread_mutex_unlock(&philo->app->print_mutex))
 		return (1);
 	return (0);
