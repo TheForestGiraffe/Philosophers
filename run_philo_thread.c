@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/08 19:46:32 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 20:21:11 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	philo_eat(t_philo *philo)
 	// Take (lock) forks
 	if (pthread_mutex_lock(&philo->first_fork->fork_mutex))
 		return (1);
-	if (thread_safe_print(TOOK_FIRST_FORK, philo))
+	if (f(TOOK_FIRST_FORK, philo))
 	{
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 		return (1);
@@ -29,7 +29,7 @@ static int	philo_eat(t_philo *philo)
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 		return (1);
 	}
-	if (thread_safe_print(TOOK_SECOND_FORK, philo))
+	if (thread_safe_printf(TOOK_SECOND_FORK, philo))
 	{
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
@@ -50,7 +50,7 @@ static int	philo_eat(t_philo *philo)
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
 		return (1);
 	}		
-	if (thread_safe_print(IS_EATING, philo))
+	if (thread_safe_printf(IS_EATING, philo))
 	{
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
@@ -92,7 +92,7 @@ static int	philo_eat(t_philo *philo)
 
 static int	philo_sleep(t_philo *philo)
 {
-	if (thread_safe_print(IS_SLEEPING, philo))
+	if (thread_safe_printf(IS_SLEEPING, philo))
 		return (1);
 	if (feedback_based_usleep(philo->app->time_to_sleep * 1000L, philo->app))
 		return (1);
@@ -101,7 +101,7 @@ static int	philo_sleep(t_philo *philo)
 
 static int	philo_think(t_philo *philo)
 {
-	if (thread_safe_print(IS_THINKING, philo))
+	if (thread_safe_printf(IS_THINKING, philo))
 		return (1);
 	return (0);
 }

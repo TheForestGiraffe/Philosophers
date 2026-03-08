@@ -6,7 +6,7 @@
 #    By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/07 15:25:57 by pecavalc          #+#    #+#              #
-#    Updated: 2026/03/08 19:58:58 by pecavalc         ###   ########.fr        #
+#    Updated: 2026/03/08 20:20:02 by pecavalc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRC = 	app_create.c \
 		run_dinner_simulation.c \
 		run_monitor_thread.c \
 		run_philo_thread.c \
-		thread_safe_print.c \
+		thread_safe_printf.c \
 		time_utils.c
 
 OBJ = 	app_create.o \
@@ -31,7 +31,7 @@ OBJ = 	app_create.o \
 		run_dinner_simulation.o \
 		run_monitor_thread.o \
 		run_philo_thread.o \
-		thread_safe_print.o \
+		thread_safe_printf.o \
 		time_utils.o
 
 HEADER = philo.h

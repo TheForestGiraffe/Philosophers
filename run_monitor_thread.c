@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 19:54:31 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/08 19:41:28 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 20:20:36 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	are_all_philos_full(t_app_data *app, bool *all_philos_full)
 	return (0);
 }
 
-static int	check_if_a_philo_died(t_app_data *app, bool *philo_died)
+static int	has_a_philo_died(t_app_data *app, bool *philo_died)
 {
 	long	i;
 
@@ -52,7 +52,7 @@ static int	check_if_a_philo_died(t_app_data *app, bool *philo_died)
 			return (1);
 		if (*philo_died)
 		{
-			if (thread_safe_print(HAS_DIED, &app->philos[i]))
+			if (thread_safe_printf(HAS_DIED, &app->philos[i]))
 				return (1);
 			break ;
 		}
@@ -61,7 +61,7 @@ static int	check_if_a_philo_died(t_app_data *app, bool *philo_died)
 	return (0);
 }
 
-static int	get_all_threads_running(t_app_data *app, bool *all_threads_running)
+static int	are_all_threads_running(t_app_data *app, bool *all_threads_running)
 {
 	if (pthread_mutex_lock(&app->app_mutex))
 		return (1);
@@ -86,7 +86,7 @@ void	*run_monitor_thread(void *data)
 	all_threads_running = false;
 	while (1)
 	{
-		if (get_all_threads_running(app, &all_threads_running))
+		if (are_all_threads_running(app, &all_threads_running))
 		{
 			set_simulation_ended_and_all_threads_ready(app);
 			return (NULL);
@@ -117,7 +117,7 @@ void	*run_monitor_thread(void *data)
 			return (NULL);
 
 		// has any philo died?	
-		if (check_if_a_philo_died(app, &philo_died))
+		if (has_a_philo_died(app, &philo_died))
 		{
 			set_simulation_ended_and_all_threads_ready(app);
 			return (NULL);
