@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 13:30:59 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/08 20:15:49 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 20:50:24 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,16 @@ int	set_all_threads_ready(t_app_data *app)
 	if (pthread_mutex_lock(&app->app_mutex))
 		return (1);
 	app->all_threads_ready = true;
+	if (pthread_mutex_unlock(&app->app_mutex))
+		return (1);
+	return (0);
+}
+
+int	set_nbr_threads_running_plus_plus(t_app_data *app)
+{
+	if (pthread_mutex_lock(&app->app_mutex))
+		return (1);
+	app->nbr_threads_running++;
 	if (pthread_mutex_unlock(&app->app_mutex))
 		return (1);
 	return (0);

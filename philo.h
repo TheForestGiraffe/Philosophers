@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/08 20:44:32 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/09 00:19:49 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,18 +78,20 @@ void		forks_destroy(t_app_data *app);
 int			get_has_simulation_ended(t_app_data *app, bool *out);
 int			set_simulation_ended_and_all_threads_ready(t_app_data *app);
 int			set_all_threads_ready(t_app_data *app);
+int			set_nbr_threads_running_plus_plus(t_app_data *app);
 
 // Philo getters and setters - philo_get_and_set.c
 int			get_has_reached_limit_nbr_meals(t_philo *philo, bool *out);
 int			set_last_meal_time(t_philo *philo);
 
-// Philo actions - philo_actions.c
+// Philo routine - philo_eat.c philo_think.c philo_sleep.c
 int			philo_eat(t_philo *philo);
 int			philo_sleep(t_philo *philo);
 int			philo_think(t_philo *philo);
 
-// parse_input.c
+// Parser - parse_input.c ft_strtol.c
 int			parse_input(int argc, char **argv, t_app_data *app);
+int			ft_strtol(const char *str, long *number);
 
 // time_utils.c
 long		get_time_ms(void);

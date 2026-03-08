@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/08 18:29:34 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 23:43:50 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,32 +110,22 @@ t_app_data	*app_create(int argc, char **argv)
 	if (!app)
 		return (NULL);
 	if (app_init(app))
-	{
-		free(app);
-		return (NULL);
-	}
+		return (free(app), NULL);
 	if (parse_input(argc, argv, app))
 	{
-		pthread_mutex_destroy(&app->app_mutex);
-		pthread_mutex_destroy(&app->print_mutex);
-		free(app);
+		app_destroy(app);
 		return (NULL);
 	}
 	app->forks = forks_create(app->nbr_philos);
 	if (!app->forks)
 	{
-		pthread_mutex_destroy(&app->app_mutex);
-		pthread_mutex_destroy(&app->print_mutex);
-		free(app);
+		app_destroy(app);
 		return (NULL);
 	}
 	app->philos = philos_create(app);
 	if (!app->philos)
 	{
-		pthread_mutex_destroy(&app->app_mutex);
-		pthread_mutex_destroy(&app->print_mutex);
-		forks_destroy(app);
-		free(app);
+		app_destroy(app);
 		return (NULL);
 	}
 	return (app);

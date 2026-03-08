@@ -6,13 +6,12 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:39:13 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/08 19:43:07 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/09 00:15:40 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "philo.h"
-#include "libft.h"
 
 static int	convert_and_validate_first_arguments(char **argv, t_app_data *app)
 {

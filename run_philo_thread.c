@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/08 20:42:38 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/09 00:23:29 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,17 @@ static int	spinlock_until_all_threads_are_ready(t_app_data *app)
 	return (0);
 }
 
+int	philo_eat_sleep_think(t_philo *philo)
+{
+	if (philo_eat(philo))
+		return (1);
+	if (philo_sleep(philo))
+		return (1);
+	if (philo_think(philo))
+		return (1);
+	return (0);
+}
+
 void	*run_philo_thread(void *philo_i)
 {
 	t_philo	*philo;
@@ -42,35 +53,21 @@ void	*run_philo_thread(void *philo_i)
 	philo = (t_philo *)philo_i;
 	simulation_ended = false;
 	if (spinlock_until_all_threads_are_ready(philo->app))
-		return (NULL);
+		return ((void *)1);
 	if (set_last_meal_time(philo))
-		return (NULL);
-
-	// Increment nbr_threads_running
-	if (pthread_mutex_lock(&philo->app->app_mutex))
-		return (NULL);
-	philo->app->nbr_threads_running++;
-	if (pthread_mutex_unlock(&philo->app->app_mutex))
-		return (NULL);
-
-	// start philo routine
+		return ((void *)1);
+	if (set_nbr_threads_running_plus_plus(philo->app))
+		return ((void *)1);
 	while (1)
 	{
 		if (get_has_simulation_ended(philo->app, &simulation_ended))
-			return (NULL);
-		if (simulation_ended)
-			break ;
+			return ((void *)1);
 		if (get_has_reached_limit_nbr_meals(philo, &has_reach_limit_nbr_meals))
-			return (NULL);
-		if (has_reach_limit_nbr_meals)
+			return ((void *)1);
+		if (simulation_ended || has_reach_limit_nbr_meals)
 			break ;
-		if (philo_eat(philo))
-			return (NULL);		
-		if (philo_sleep(philo))
-			return (NULL);
-		if (philo_think(philo))
-			return (NULL);
+		if (philo_eat_sleep_think(philo))
+			return ((void *)1);
 	}
 	return (NULL);
 }
-
