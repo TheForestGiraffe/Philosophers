@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 14:49:42 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/08 19:37:44 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 20:16:38 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	feedback_based_usleep(long sleep_time_us, t_app_data *app)
 			return (1);
 		if (simulation_ended)
 			break ;
-		elapsed_time = get_time_us() - start_time; 
+		elapsed_time = get_time_us() - start_time;
 		if (elapsed_time >= sleep_time_us)
 			break ;
 		remaining_time = sleep_time_us - elapsed_time;
