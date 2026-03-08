@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 23:00:44 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 19:46:32 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,151 +16,120 @@
 
 static int	philo_eat(t_philo *philo)
 {
-	int	rc;
-
 	// Take (lock) forks
-	rc = pthread_mutex_lock(&philo->first_fork->fork_mutex);
-	if (rc)
-		return (rc);
-	rc = thread_safe_print(TOOK_FIRST_FORK, philo);
-	if (rc)
+	if (pthread_mutex_lock(&philo->first_fork->fork_mutex))
+		return (1);
+	if (thread_safe_print(TOOK_FIRST_FORK, philo))
 	{
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
-		return (rc);
+		return (1);
 	}
-	rc = pthread_mutex_lock(&philo->second_fork->fork_mutex);
-	if (rc)
+	if (pthread_mutex_lock(&philo->second_fork->fork_mutex))
 	{
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
-		return (rc);
+		return (1);
 	}
-	rc = thread_safe_print(TOOK_SECOND_FORK, philo);
-	if (rc)
+	if (thread_safe_print(TOOK_SECOND_FORK, philo))
 	{
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
-		return (rc);
+		return (1);
 	}
 
 	// Eat
-	rc = pthread_mutex_lock(&philo->philo_mutex);
-	if (rc)
+	if (pthread_mutex_lock(&philo->philo_mutex))
 	{
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
-		return (rc);
+		return (1);
 	}
 	philo->last_meal_time = get_time_ms();
-	rc = pthread_mutex_unlock(&philo->philo_mutex);
-	if (rc)
+	if (pthread_mutex_unlock(&philo->philo_mutex))
 	{
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
-		return (rc);
+		return (1);
 	}		
-	rc = thread_safe_print(IS_EATING, philo);
-	if (rc)
+	if (thread_safe_print(IS_EATING, philo))
 	{
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
-		return (rc);
+		return (1);
 	}
-	rc = feedback_based_usleep(philo->app->time_to_eat * 1000L, philo->app);
-	if (rc)
+	if (feedback_based_usleep(philo->app->time_to_eat * 1000L, philo->app))
 	{
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
-		return (rc);
+		return (1);
 	}
-	rc = pthread_mutex_lock(&philo->philo_mutex);
-	if (rc)
+	if (pthread_mutex_lock(&philo->philo_mutex))
 	{
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
-		return (rc);
+		return (1);
 	}
 	philo->meals_counter++;
 	if (philo->app->limit_nbr_meals > 0
 		&& philo->meals_counter >= philo->app->limit_nbr_meals)
 		philo->has_reached_limit_nbr_meals = true;
-	rc = pthread_mutex_unlock(&philo->philo_mutex);
-	if (rc)	
+	if (pthread_mutex_unlock(&philo->philo_mutex))
 	{
 		pthread_mutex_unlock(&philo->first_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
-		return (rc);
+		return (1);
 	}
 	
 	// Release (unlock) forks
-	rc = pthread_mutex_unlock(&philo->first_fork->fork_mutex);
-	if (rc)
+	if (pthread_mutex_unlock(&philo->first_fork->fork_mutex))
 	{
 		pthread_mutex_unlock(&philo->second_fork->fork_mutex);
-		return (rc);
+		return (1);
 	}
-	rc = pthread_mutex_unlock(&philo->second_fork->fork_mutex);
-	if (rc)
-		return (rc);
+	if (pthread_mutex_unlock(&philo->second_fork->fork_mutex))
+		return (1);
 	return (0);
 }
 
 static int	philo_sleep(t_philo *philo)
 {
-	int	rc;
-	
-	rc = thread_safe_print(IS_SLEEPING, philo);
-	if (rc)
-		return (rc);
-	rc = feedback_based_usleep(philo->app->time_to_sleep * 1000L, philo->app);
-	if (rc)
-		return (rc);
+	if (thread_safe_print(IS_SLEEPING, philo))
+		return (1);
+	if (feedback_based_usleep(philo->app->time_to_sleep * 1000L, philo->app))
+		return (1);
 	return (0);
 }
 
-// TODO
 static int	philo_think(t_philo *philo)
 {
-	int	rc;
-
-	rc = thread_safe_print(IS_THINKING, philo);
-	if (rc)
-		return (rc);
+	if (thread_safe_print(IS_THINKING, philo))
+		return (1);
 	return (0);
 }
 
 static int	get_has_reached_limit_nbr_meals(t_philo *philo, bool *out)
 {
-	int	rc;
-
-	rc = pthread_mutex_lock(&philo->philo_mutex);
-	if (rc)
-		return (rc);
+	if (pthread_mutex_lock(&philo->philo_mutex))
+		return (1);
 	*out = philo->has_reached_limit_nbr_meals;
-	rc = pthread_mutex_unlock(&philo->philo_mutex);
-	if (rc)
-		return (rc);
+	if (pthread_mutex_unlock(&philo->philo_mutex))
+		return (1);
 	return (0);
 }
 
 static int	spinlock_until_all_threads_are_ready(t_app_data *app)
 {
-	int	rc;
-
 	while (1)
 	{
-		rc = pthread_mutex_lock(&app->app_mutex);
-		if (rc)
-			return (rc);
+		if (pthread_mutex_lock(&app->app_mutex))
+			return (1);
 		if (app->all_threads_ready)
 		{
-			rc = pthread_mutex_unlock(&app->app_mutex);
-			if (rc)
-				return (rc);
+			if (pthread_mutex_unlock(&app->app_mutex))
+				return (1);
 			break ;
 		}
-		rc = pthread_mutex_unlock(&app->app_mutex);
-		if (rc)
-			return (rc);
+		if (pthread_mutex_unlock(&app->app_mutex))
+			return (1);
 		usleep(50);
 	}
 	return (0);
@@ -168,57 +137,47 @@ static int	spinlock_until_all_threads_are_ready(t_app_data *app)
 
 void	*run_philo_thread(void *philo_i)
 {
-	int		rc;
 	t_philo	*philo;
-	bool	stop_thread;
+	bool	simulation_ended;
+	bool	has_reach_limit_nbr_meals;
 
 	philo = (t_philo *)philo_i;
-	stop_thread = false;
-	rc = spinlock_until_all_threads_are_ready(philo->app);
-	if (rc)
+	simulation_ended = false;
+	if (spinlock_until_all_threads_are_ready(philo->app))
 		return (NULL);
 	
 	// Set last meal time
-	rc = pthread_mutex_lock(&philo->philo_mutex);
-	if (rc)
+	if (pthread_mutex_lock(&philo->philo_mutex))
 		return (NULL);
 	philo->last_meal_time = get_time_ms();
-	rc = pthread_mutex_unlock(&philo->philo_mutex);
-	if (rc)
+	if (pthread_mutex_unlock(&philo->philo_mutex))
 		return (NULL);
 
 	// Increment nbr_threads_running
-	rc = pthread_mutex_lock(&philo->app->app_mutex);
-	if (rc)
+	if (pthread_mutex_lock(&philo->app->app_mutex))
 		return (NULL);
 	philo->app->nbr_threads_running++;
-	rc = pthread_mutex_unlock(&philo->app->app_mutex);
-	if (rc)
+	if (pthread_mutex_unlock(&philo->app->app_mutex))
 		return (NULL);
 
+	// start philo routine
 	while (1)
 	{
-		rc = get_has_simulation_ended(philo->app, &stop_thread);
-		if (rc)
+		if (get_has_simulation_ended(philo->app, &simulation_ended))
 			return (NULL);
-		if (stop_thread)
+		if (simulation_ended)
 			break ;
-		rc = get_has_reached_limit_nbr_meals(philo, &stop_thread);
-		if (rc)
+		if (get_has_reached_limit_nbr_meals(philo, &has_reach_limit_nbr_meals))
 			return (NULL);
-		if (stop_thread)
+		if (has_reach_limit_nbr_meals)
 			break ;
-		rc = philo_eat(philo);
-		if (rc)
+		if (philo_eat(philo))
 			return (NULL);		
-		rc = philo_sleep(philo);
-		if (rc)
+		if (philo_sleep(philo))
 			return (NULL);
-		// TODO: think
-		rc = philo_think(philo);
-		if (rc)
+		if (philo_think(philo))
 			return (NULL);
 	}
-	return (NULL); // TODO: (NULL?) how to properly return from a thread and catch return codes.
+	return (NULL);
 }
 

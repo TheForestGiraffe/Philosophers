@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:14:47 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 20:54:22 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 19:42:26 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void		forks_destroy(t_app_data *app);
 
 // app.c
 int			get_has_simulation_ended(t_app_data *app, bool *out);
+int			set_simulation_ended_and_all_threads_ready(t_app_data *app);
 
 // parse_input.c
 int			parse_input(int argc, char **argv, t_app_data *app);
@@ -89,7 +90,6 @@ int			feedback_based_usleep(long sleep_time_us, t_app_data *app);
 
 // run_dinner_simulation.c
 int			run_dinner_simulation(t_app_data *app);
-int			stop_simulation_and_release_threads(t_app_data *app);
 
 // run_philo_routine.c
 void		*run_philo_thread(void *philo_i);

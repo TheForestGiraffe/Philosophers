@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 14:08:21 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 21:53:39 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 19:36:54 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,21 @@
 
 int	thread_safe_print(t_philo_status philo_status, t_philo *philo)
 {
-	int		rc;
 	long	elapsed_time;
 	bool	simulation_ended;
 
-	rc = pthread_mutex_lock(&philo->app->print_mutex);
-	if (rc)
-		return (rc);
+	if (pthread_mutex_lock(&philo->app->print_mutex))
+		return (1);
 	elapsed_time = get_time_ms() - philo->app->simulation_start_time;
-	rc = get_has_simulation_ended(philo->app, &simulation_ended);
-	if (rc)
+	if (get_has_simulation_ended(philo->app, &simulation_ended))
 	{
-		rc = pthread_mutex_unlock(&philo->app->print_mutex);
-		return (rc);
+		pthread_mutex_unlock(&philo->app->print_mutex);
+		return (1);
 	}
 	if (simulation_ended)
 	{
-		rc = pthread_mutex_unlock(&philo->app->print_mutex);
+		if (pthread_mutex_unlock(&philo->app->print_mutex))
+			return (1);
 		return (0);
 	}
 	if (philo_status == IS_EATING)
@@ -44,6 +42,7 @@ int	thread_safe_print(t_philo_status philo_status, t_philo *philo)
 		printf("%ld %i has taken a fork\n", elapsed_time, philo->id);
 	if (philo_status == HAS_DIED)
 		printf("%ld %i died\n", elapsed_time, philo->id);
-	rc = pthread_mutex_unlock(&philo->app->print_mutex);
-	return (rc);
+	if (pthread_mutex_unlock(&philo->app->print_mutex))
+		return (1);
+	return (0);
 }

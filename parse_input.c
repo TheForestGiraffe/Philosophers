@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:39:13 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 23:05:09 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 19:43:07 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	convert_and_validate_first_arguments(char **argv, t_app_data *app)
 	if (app->nbr_philos < 1)
 	{
 		printf("The number of philosophers must be at least 1.");
-		return (2);
+		return (1);
 	}
 	if (app->time_to_die < app->minimum_time_allowed
 		|| app->time_to_eat < app->minimum_time_allowed
@@ -35,31 +35,27 @@ static int	convert_and_validate_first_arguments(char **argv, t_app_data *app)
 	{
 		printf("The minimum time allowed is %ld ms.\n",
 			app->minimum_time_allowed);
-		return (3);
+		return (1);
 	}
 	return (0);
 }
 
 int	parse_input(int argc, char **argv, t_app_data *app)
 {
-	int	rc;
-
 	if (argc < 5 || argc > 6)
 	{
 		printf("Invalid number of arguments\n");
 		return (1);
 	}
-	rc = convert_and_validate_first_arguments(argv, app);
-	if (rc)
-		return (rc);
+	if (convert_and_validate_first_arguments(argv, app))
+		return (1);
 	if (argc == 6)
 	{
 		app->has_limit_nbr_meals = true;
-		rc = ft_strtol(argv[5], &app->limit_nbr_meals);
-		if (rc)
-			return (printf("The optional argument is invalid.\n"), rc);
+		if (ft_strtol(argv[5], &app->limit_nbr_meals))
+			return (printf("The optional argument is invalid.\n"), 1);
 		if (app->limit_nbr_meals < 1)
-			return (printf("Max. number of meals must be more than 0.\n"), 2);
+			return (printf("Max. number of meals must be more than 0.\n"), 1);
 	}
 	return (0);
 }

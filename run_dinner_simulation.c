@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 10:17:49 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 23:05:28 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 19:44:01 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,63 +14,33 @@
 #include <pthread.h>
 #include <stdio.h>
 
-int	stop_simulation_and_release_threads(t_app_data *app)
-{
-	int	rc;
-
-	rc = pthread_mutex_lock(&app->app_mutex);
-	if (rc)
-		return (rc);
-	app->has_simulation_ended = true;
-	app->all_threads_ready = true;
-	rc = pthread_mutex_unlock(&app->app_mutex);
-	if (rc)
-		return (rc);
-	return (0);
-}
-
 static int	join_philo_threads(t_app_data *app, long count)
 {
 	long	i;
-	int		rc;
 
 	i = 0;
 	while (i < count)
-	{
-		rc = pthread_join(app->philos[i].thread_id, NULL);
-		if (rc)
-			return (rc);
-		i++;
-	}
+		if (pthread_join(app->philos[i++].thread_id, NULL))
+			return (1);
 	return (0);
 }
 
 static int	create_philo_threads(t_app_data *app)
 {
-	int		rc;
-	int		rc2;
 	long	i;
 	long	j;
 
 	i = 0;
 	while (i < app->nbr_philos)
 	{
-		rc = pthread_create(&app->philos[i].thread_id, NULL,
-				run_philo_thread, (void *)&app->philos[i]);
-		if (rc)
+		if (pthread_create(&app->philos[i].thread_id, NULL,
+				run_philo_thread, (void *)&app->philos[i]))
 		{
-			rc2 = stop_simulation_and_release_threads(app);
-			if (rc2)
-				return (rc2);
+			set_simulation_ended_and_all_threads_ready(app);
 			j = 0;
 			while (j < i)
-			{
-				rc2 = pthread_join(app->philos[j].thread_id, NULL);
-				if (rc2)
-					return (rc2);
-				j++;
-			}
-			return (rc);
+				pthread_join(app->philos[j++].thread_id, NULL);
+			return (1);
 		}
 		i++;
 	}
@@ -79,71 +49,39 @@ static int	create_philo_threads(t_app_data *app)
 
 static int	set_all_threads_ready(t_app_data *app)
 {
-	int	rc;
-
-	rc = pthread_mutex_lock(&app->app_mutex);
-	if (rc)
-		return (rc);
+	if (pthread_mutex_lock(&app->app_mutex))
+		return (1);
 	app->all_threads_ready = true;
-	rc = pthread_mutex_unlock(&app->app_mutex);
-	if (rc)
-		return (rc);
+	if (pthread_mutex_unlock(&app->app_mutex))
+		return (1);
 	return (0);
-}
-
-static void	simulate_single_philo(long time_to_die)
-{
-	printf("0 1 has taken a fork\n");
-	printf("%ld 1 died\n", time_to_die);
 }
 
 int	run_dinner_simulation(t_app_data *app)
 {
-	int	rc;
-	int	cleanup_rc;
-
-	// for a single philosopher:
 	if (app->nbr_philos == 1)
 	{
-		simulate_single_philo(app->time_to_die);
+		printf("0 1 has taken a fork\n%ld 1 died\n", app->time_to_die);
 		return (0);
 	}
-
-	// when philo > 1
-	rc = create_philo_threads(app);
-	if (rc)
-		return (rc);
-	rc = pthread_create(&app->monitor, NULL, run_monitor_thread, app);
-	if (rc)
+	if (create_philo_threads(app))
+		return (1);
+	if (pthread_create(&app->monitor, NULL, run_monitor_thread, app))
 	{
-		cleanup_rc = stop_simulation_and_release_threads(app);
-		if (cleanup_rc)
-			return (cleanup_rc);
-		cleanup_rc = join_philo_threads(app, app->nbr_philos);
-		if (cleanup_rc)
-			return (cleanup_rc);
-		return (rc);
+		set_simulation_ended_and_all_threads_ready(app);
+		join_philo_threads(app, app->nbr_philos);
+		return (1);
 	}
 	app->simulation_start_time = get_time_ms();
-	rc = set_all_threads_ready(app);
-	if (rc)
+	if (set_all_threads_ready(app))
 	{
-		cleanup_rc = stop_simulation_and_release_threads(app);
-		if (cleanup_rc)
-			return (cleanup_rc);
-		cleanup_rc = pthread_join(app->monitor, NULL);
-		if (cleanup_rc)
-			return (cleanup_rc);
-		cleanup_rc = join_philo_threads(app, app->nbr_philos);
-		if (cleanup_rc)
-			return (cleanup_rc);
-		return (rc);
+		set_simulation_ended_and_all_threads_ready(app);
+		pthread_join(app->monitor, NULL);
+		join_philo_threads(app, app->nbr_philos);
+		return (1);
 	}
-	rc = pthread_join(app->monitor, NULL);
-	if (rc)
-		return (rc);
-	rc = join_philo_threads(app, app->nbr_philos);
-	if (rc)
-		return (rc);
+	if (pthread_join(app->monitor, NULL)
+		|| join_philo_threads(app, app->nbr_philos))
+		return (1);
 	return (0);
 }

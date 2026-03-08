@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:28:15 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 21:22:26 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 18:29:34 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static void	assign_forks(int i, t_philo *philos, t_fork *forks, long nbr_philos)
 
 static t_philo	*philos_create(t_app_data *app)
 {
-	int		rc;
 	t_philo	*philos;
 	long	i;
 
@@ -47,8 +46,7 @@ static t_philo	*philos_create(t_app_data *app)
 		philos[i].last_meal_time = -1;
 		philos[i].app = app;
 		assign_forks(i, philos, app->forks, app->nbr_philos);
-		rc = pthread_mutex_init(&philos[i].philo_mutex, NULL);
-		if (rc)
+		if (pthread_mutex_init(&philos[i].philo_mutex, NULL))
 		{
 			while (i > 0)
 				pthread_mutex_destroy(&philos[--i].philo_mutex);
@@ -86,8 +84,6 @@ static t_fork	*forks_create(long nbr_philos)
 
 static int	app_init(t_app_data *app)
 {
-	int	rc;
-
 	app->minimum_time_allowed = 60;
 	app->has_limit_nbr_meals = false;
 	app->limit_nbr_meals = 0;
@@ -96,34 +92,29 @@ static int	app_init(t_app_data *app)
 	app->forks = NULL;
 	app->all_threads_ready = false;
 	app->nbr_threads_running = 0;
-	rc = pthread_mutex_init(&app->app_mutex, NULL);
-	if (rc)
-		return (rc);
-	rc = pthread_mutex_init(&app->print_mutex, NULL);
-	if (rc)
+	if (pthread_mutex_init(&app->app_mutex, NULL))
+		return (1);
+	if (pthread_mutex_init(&app->print_mutex, NULL))
 	{
 		pthread_mutex_destroy(&app->app_mutex);
-		return (rc);
+		return (1);
 	}
 	return (0);
 }
 
 t_app_data	*app_create(int argc, char **argv)
 {
-	int			rc;
 	t_app_data	*app;
 
 	app = malloc(sizeof(t_app_data));
 	if (!app)
 		return (NULL);
-	rc = app_init(app);
-	if (rc)
+	if (app_init(app))
 	{
 		free(app);
 		return (NULL);
 	}
-	rc = parse_input(argc, argv, app);
-	if (rc)
+	if (parse_input(argc, argv, app))
 	{
 		pthread_mutex_destroy(&app->app_mutex);
 		pthread_mutex_destroy(&app->print_mutex);

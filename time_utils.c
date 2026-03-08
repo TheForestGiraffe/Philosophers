@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 14:49:42 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/07 16:59:55 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/08 19:37:44 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,17 @@ long	get_time_us(void)
 
 int	feedback_based_usleep(long sleep_time_us, t_app_data *app)
 {
-	int		rc;
 	long	start_time;
 	long	elapsed_time;
 	long	remaining_time;
-	bool	stop;
+	bool	simulation_ended;
 
 	start_time = get_time_us();
 	while (1)
 	{
-		rc = get_has_simulation_ended(app, &stop);
-		if (rc)
-			return (rc);
-		if (stop)
+		if (get_has_simulation_ended(app, &simulation_ended))
+			return (1);
+		if (simulation_ended)
 			break ;
 		elapsed_time = get_time_us() - start_time; 
 		if (elapsed_time >= sleep_time_us)
