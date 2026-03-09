@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/09 01:28:43 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/09 02:08:23 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ void	*run_philo_thread(void *philo_i)
 	simulation_ended = false;
 	if (spinlock_until_all_threads_are_ready(philo->app))
 		return ((void *)1);
-	if ((philo->id % 2) == 0)
-		if (feedback_based_usleep((philo->app->time_to_eat * 1000L) / 2, philo->app))
-			return ((void *)1);
 	if (set_last_meal_time(philo))
 		return ((void *)1);
+	if ((philo->id % 2) == 0)
+		if (feedback_based_usleep(philo->app->time_to_eat / 2, philo->app))
+			return ((void *)1);
 	if (set_nbr_threads_running_plus_plus(philo->app))
 		return ((void *)1);
 	while (1)
