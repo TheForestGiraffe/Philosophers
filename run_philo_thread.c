@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/09 02:36:19 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/09 02:38:58 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	*run_philo_thread(void *philo_i)
 	if (set_last_meal_time(philo))
 		return ((void *)1);
 	if ((philo->id % 2) == 0)
-		if (feedback_based_usleep(philo->app->time_to_die / 4, philo->app))
+		if (feedback_based_usleep(philo->app->time_to_eat / 2, philo->app))
 			return ((void *)1);
 	if (set_nbr_threads_running_plus_plus(philo->app))
 		return ((void *)1);
