@@ -6,7 +6,7 @@
 /*   By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 11:47:51 by pecavalc          #+#    #+#             */
-/*   Updated: 2026/03/09 02:38:58 by pecavalc         ###   ########.fr       */
+/*   Updated: 2026/03/09 02:46:45 by pecavalc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,12 @@ void	*run_philo_thread(void *philo_i)
 {
 	t_philo	*philo;
 	bool	simulation_ended;
-	bool	has_reach_limit_nbr_meals;
+	bool	reached_limit_meals;
 
 	philo = (t_philo *)philo_i;
 	simulation_ended = false;
-	if (spinlock_until_all_threads_are_ready(philo->app))
-		return ((void *)1);
-	if (set_last_meal_time(philo))
+	if (spinlock_until_all_threads_are_ready(philo->app)
+		|| set_last_meal_time(philo))
 		return ((void *)1);
 	if ((philo->id % 2) == 0)
 		if (feedback_based_usleep(philo->app->time_to_eat / 2, philo->app))
@@ -63,11 +62,10 @@ void	*run_philo_thread(void *philo_i)
 		return ((void *)1);
 	while (1)
 	{
-		if (get_has_simulation_ended(philo->app, &simulation_ended))
+		if (get_has_simulation_ended(philo->app, &simulation_ended)
+			|| get_has_reached_limit_nbr_meals(philo, &reached_limit_meals))
 			return ((void *)1);
-		if (get_has_reached_limit_nbr_meals(philo, &has_reach_limit_nbr_meals))
-			return ((void *)1);
-		if (simulation_ended || has_reach_limit_nbr_meals)
+		if (simulation_ended || reached_limit_meals)
 			break ;
 		if (philo_eat_sleep_think(philo))
 			return ((void *)1);
