@@ -6,7 +6,7 @@
 #    By: pecavalc <pecavalc@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/07 15:25:57 by pecavalc          #+#    #+#              #
-#    Updated: 2026/03/09 00:25:54 by pecavalc         ###   ########.fr        #
+#    Updated: 2026/03/09 10:37:31 by pecavalc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ OBJ = 	app_create.o \
 HEADER = philo.h
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread -g
+CFLAGS = -Wall -Wextra -Werror -pthread
 
 all: $(NAME)
 
